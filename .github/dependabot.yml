@@ -1,0 +1,19 @@
+version: 2
+registries:
+  npm-registry-registry-npmjs-org:
+    type: npm-registry
+    url: https://registry.npmjs.org
+
+updates:
+  - package-ecosystem: npm
+    directory: '/'
+    schedule:
+      interval: weekly
+      time: '00:00'
+    pull-request-branch-name:
+      separator: '-'
+    open-pull-requests-limit: 5
+    labels:
+      - dependencies
+    registries:
+      - npm-registry-registry-npmjs-org
