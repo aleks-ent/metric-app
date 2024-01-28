@@ -1,7 +1,5 @@
 'use client'
 
-import Image from 'next/image'
-
 type BadgeProp = {
   owner: string
   repo: string
@@ -14,7 +12,7 @@ const Badge = ({ owner, repo }: BadgeProp) => {
     <div>
       <div className="flex items-center justify-center">
         <div style={{ height: '24px' }}>
-          <Image
+          <img
             src={`/api/badge/${owner}/${repo}/badge.svg`}
             alt={`Activity badge for ${owner}/${repo} repository`}
           />

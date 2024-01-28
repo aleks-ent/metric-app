@@ -1,5 +1,3 @@
-import Image from 'next/image'
-
 import type { Metric, MetricOject } from '@/app/types'
 
 type ActivityIndicatorProp = {
@@ -31,7 +29,7 @@ const Contributors = ({ metric }: ActivityIndicatorProp) => {
                   <td className="p-2">
                     <div className="flex">
                       <div>
-                        <Image
+                        <img
                           className="inline-block h-6 w-6 rounded-full"
                           alt={`Avatar of ${contributor.author.login}`}
                           src={contributor.author.avatar_url}
