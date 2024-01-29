@@ -18,10 +18,13 @@ const getMetric = async (owner: string, repo: string): Promise<MetricOject> => {
     startQuarter,
     endQuarter,
   )
-  const additionsAndDeletionsStatsRating = getRating(
-    additionsAndDeletionsStats.additions.start,
-    additionsAndDeletionsStats.additions.end,
-  )
+
+  const additionsAndDeletionsStatsRating = additionsAndDeletionsStats
+    ? getRating(
+        additionsAndDeletionsStats.additions.start,
+        additionsAndDeletionsStats.additions.end,
+      )
+    : null
 
   const commitsStats = await getCommitStats(
     owner,
@@ -44,10 +47,13 @@ const getMetric = async (owner: string, repo: string): Promise<MetricOject> => {
         end: endQuarter.end.toISOString(),
       },
     },
-    additionsAndDeletionsStats: {
-      data: additionsAndDeletionsStats,
-      rating: additionsAndDeletionsStatsRating,
-    },
+    additionsAndDeletionsStats:
+      additionsAndDeletionsStats && additionsAndDeletionsStatsRating !== null
+        ? {
+            data: additionsAndDeletionsStats,
+            rating: additionsAndDeletionsStatsRating,
+          }
+        : null,
     commitsStats: {
       data: commitsStats,
       rating: commitsStatsRating,

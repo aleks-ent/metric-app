@@ -5,6 +5,10 @@ import { Octokit } from '@octokit/rest'
 
 import logger from '@/libs/logger'
 
+type RequestOptions = {
+  ignoreEmptyResponse?: boolean
+}
+
 const gitHubClient = new Octokit({
   auth: process.env.GITHUB_TOKEN,
 })
@@ -34,12 +38,19 @@ const fetchUrlWithRetry = async (url: string) => {
 }
 
 const client = {
-  request: async (resourceLocation: string) => {
+  request: async (
+    resourceLocation: string,
+    { ignoreEmptyResponse }: RequestOptions = {},
+  ) => {
     let result = null
     try {
       const response = await fetchUrlWithRetry(resourceLocation)
 
       if (!response) {
+        if (ignoreEmptyResponse) {
+          return null
+        }
+
         throw new Error('Request to GitHub failed')
       }
 
