@@ -28,6 +28,20 @@ export type Contributor = {
   }
 }
 
+export type AdditionsAndDeletionsStats = {
+  rating: number
+  data: {
+    additions: {
+      start: number
+      end: number
+    }
+    deletions: {
+      start: number
+      end: number
+    }
+  }
+}
+
 export type MetricOject = {
   comparedTimeRanges: {
     beginning: {
@@ -39,19 +53,7 @@ export type MetricOject = {
       end: string
     }
   }
-  additionsAndDeletionsStats: {
-    rating: number
-    data: {
-      additions: {
-        start: number
-        end: number
-      }
-      deletions: {
-        start: number
-        end: number
-      }
-    }
-  }
+  additionsAndDeletionsStats: AdditionsAndDeletionsStats | null
   commitsStats: {
     rating: number
     data: {

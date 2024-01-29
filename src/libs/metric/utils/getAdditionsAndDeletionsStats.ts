@@ -13,7 +13,12 @@ const getAdditionsAndDeletionsStats = async (
 ) => {
   const data = await gitGitHubClient.request(
     `GET /repos/${owner}/${repo}/stats/code_frequency`,
+    { ignoreEmptyResponse: true },
   )
+
+  if (!data) {
+    return null
+  }
 
   const numberOfAdditionsInStartQuarter = []
   const numberOfDeletionsInStartQuarter = []

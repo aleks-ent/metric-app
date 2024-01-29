@@ -26,19 +26,26 @@ const ActivityIndicator = ({ metric }: ActivityIndicatorProp) => {
   const commitsStart = Math.round(metricsObject.commitsStats.data.start)
   const commitsEnd = Math.round(metricsObject.commitsStats.data.end)
 
-  const additionsStart = Math.round(
-    metricsObject.additionsAndDeletionsStats.data.additions.start,
-  )
-  const additionsEnd = Math.round(
-    metricsObject.additionsAndDeletionsStats.data.additions.end,
-  )
+  let additionsStart = null
+  let additionsEnd = null
+  let deletionsStart = null
+  let deletionsEnd = null
 
-  const deletionsStart = Math.round(
-    Math.abs(metricsObject.additionsAndDeletionsStats.data.deletions.start),
-  )
-  const deletionsEnd = Math.abs(
-    Math.round(metricsObject.additionsAndDeletionsStats.data.deletions.end),
-  )
+  if (metricsObject.additionsAndDeletionsStats) {
+    additionsStart = Math.round(
+      metricsObject.additionsAndDeletionsStats.data.additions.start,
+    )
+    additionsEnd = Math.round(
+      metricsObject.additionsAndDeletionsStats.data.additions.end,
+    )
+
+    deletionsStart = Math.round(
+      Math.abs(metricsObject.additionsAndDeletionsStats.data.deletions.start),
+    )
+    deletionsEnd = Math.abs(
+      Math.round(metricsObject.additionsAndDeletionsStats.data.deletions.end),
+    )
+  }
 
   return (
     <div>
@@ -60,7 +67,10 @@ const ActivityIndicator = ({ metric }: ActivityIndicatorProp) => {
         </h2>
         <div className="pt-2">
           <p>
-            The result is based on ratio of number of commits and code additions
+            The result is based on ratio of number of commits{' '}
+            {metricsObject.additionsAndDeletionsStats
+              ? 'and code additions '
+              : ''}
             from initial and final time ranges.
           </p>
           <p>
@@ -88,23 +98,32 @@ const ActivityIndicator = ({ metric }: ActivityIndicatorProp) => {
             )}{' '}
           </p>
         </div>
-        <div className="pt-2">
-          <p>
-            From <span className="font-mono">{commitsStart}</span> to{' '}
-            <span className="font-mono">{commitsEnd}</span> commits per week{' '}
-            {getGrowthIndicator(commitsStart, commitsEnd)}
-          </p>
-          <p>
-            From <span className="font-mono">{additionsStart}</span> to{' '}
-            <span className="font-mono">{additionsEnd}</span> additions per week{' '}
-            {getGrowthIndicator(additionsStart, additionsEnd)}
-          </p>
-          <p>
-            From <span className="font-mono">{deletionsStart}</span> to{' '}
-            <span className="font-mono">{deletionsEnd}</span> deletions per week{' '}
-            {getGrowthIndicator(additionsStart, additionsEnd)}
-          </p>
-        </div>
+        {additionsStart && additionsEnd && deletionsStart && deletionsEnd ? (
+          <div className="pt-2">
+            <p>
+              From <span className="font-mono">{commitsStart}</span> to{' '}
+              <span className="font-mono">{commitsEnd}</span> commits per week{' '}
+              {getGrowthIndicator(commitsStart, commitsEnd)}
+            </p>
+            <p>
+              From <span className="font-mono">{additionsStart}</span> to{' '}
+              <span className="font-mono">{additionsEnd}</span> additions per
+              week {getGrowthIndicator(additionsStart, additionsEnd)}
+            </p>
+            <p>
+              From <span className="font-mono">{deletionsStart}</span> to{' '}
+              <span className="font-mono">{deletionsEnd}</span> deletions per
+              week {getGrowthIndicator(deletionsStart, deletionsEnd)}
+            </p>
+          </div>
+        ) : (
+          <div className="pt-2">
+            <p className="font-bold">
+              Additions and deletions stats are not available for this
+              repository due to GitHub API limitations.
+            </p>
+          </div>
+        )}
         <div className="pt-2">
           Data calculated on{' '}
           {format(new Date(metric.created_at), TIME_RANGE_FORMAT)}
