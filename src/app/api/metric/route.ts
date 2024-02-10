@@ -44,8 +44,8 @@ export const GET = async (request: Request) => {
   }
 
   const { owner: unfilteredOwner, repo: unfilteredRepo } = repoAndOwner
-  const owner = unfilteredOwner.replace(/[^a-zA-Z0-9-_]/g, '')
-  const repo = unfilteredRepo.replace(/[^a-zA-Z0-9-_]/g, '')
+  const owner = unfilteredOwner.replace(/[^a-zA-Z0-9-_.]/g, '')
+  const repo = unfilteredRepo.replace(/[^a-zA-Z0-9-_.]/g, '')
 
   try {
     const metric = await fetchAndSaveMetric(owner, repo)
